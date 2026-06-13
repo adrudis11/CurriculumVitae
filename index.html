@@ -11,13 +11,14 @@
 
     <style>
         :root {
-            --bg: #09090b; /* Negro profundo casi OLED */
+            --bg: #09090b; 
             --surface: #18181b;
             --surface-hover: #27272a;
             --text-primary: #fafafa;
             --text-secondary: #a1a1aa;
             --border: #27272a;
             --accent: #ffffff;
+            --accent-glow: rgba(255, 255, 255, 0.1);
             
             --font-display: 'Syne', sans-serif;
             --font-body: 'Inter', sans-serif;
@@ -29,92 +30,132 @@
             box-sizing: border-box;
         }
 
+        /* Centrado Absoluto y Seguro */
         body {
             font-family: var(--font-body);
             background-color: var(--bg);
             color: var(--text-primary);
-            line-height: 1.5;
+            line-height: 1.6;
             -webkit-font-smoothing: antialiased;
-            padding: 2rem;
             min-height: 100vh;
+            display: flex;
+            padding: 2rem;
+            overflow-x: hidden;
         }
 
-        /* Contenedor principal estilo Bento Grid */
+        /* El contenedor usa margin: auto para centrarse perfectamente en Flexbox */
         .wrapper {
-            max-width: 1200px;
-            margin: 0 auto;
+            width: 100%;
+            max-width: 1100px;
+            margin: auto; 
         }
 
-        /* Hero Section - Brutalismo Tipográfico */
+        /* --- Animaciones de Entrada --- */
+        @keyframes fadeDown {
+            0% { opacity: 0; transform: translateY(-30px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeUpScale {
+            0% { opacity: 0; transform: translateY(40px) scale(0.95); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        /* Header Animation */
         header {
-            margin: 10vh 0 8vh 0;
-            animation: fadeUp 1s ease-out forwards;
-            opacity: 0;
+            margin-bottom: 4rem;
+            animation: fadeDown 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            text-align: center;
+        }
+
+        @media (min-width: 768px) {
+            header { text-align: left; }
         }
 
         h1 {
             font-family: var(--font-display);
-            font-size: clamp(3rem, 8vw, 7rem);
+            font-size: clamp(3rem, 8vw, 6.5rem);
             font-weight: 800;
             line-height: 0.9;
-            letter-spacing: -0.03em;
+            letter-spacing: -0.04em;
             margin-bottom: 1.5rem;
+            background: linear-gradient(to right, #ffffff, #a1a1aa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
 
         .subtitle {
-            font-size: clamp(1.2rem, 2vw, 1.5rem);
+            font-size: clamp(1.1rem, 2vw, 1.4rem);
             color: var(--text-secondary);
             font-weight: 300;
-            max-width: 600px;
+            max-width: 700px;
+            margin: 0 auto;
         }
 
-        /* Layout Grid Principal */
+        @media (min-width: 768px) {
+            .subtitle { margin: 0; }
+        }
+
+        /* Grid Setup */
         .bento-grid {
             display: grid;
             grid-template-columns: repeat(1, 1fr);
             gap: 1.5rem;
-            opacity: 0;
-            animation: fadeUp 1s ease-out 0.3s forwards;
         }
 
         @media (min-width: 768px) {
             .bento-grid {
                 grid-template-columns: repeat(3, 1fr);
-                grid-auto-rows: minmax(300px, auto);
+                grid-auto-rows: minmax(280px, auto);
             }
         }
 
-        /* Tarjetas estilo "Glassmorphism" sutil */
+        /* Estilos de Tarjeta Base */
         .card {
             background: var(--surface);
             border: 1px solid var(--border);
             border-radius: 24px;
             padding: 2.5rem;
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            position: relative;
-            overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
             display: flex;
             flex-direction: column;
+            opacity: 0; /* Oculto inicialmente para la animación */
+            animation: fadeUpScale 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
+        /* Efecto Hover Dinámico (Magnético) */
         .card:hover {
             border-color: #52525b;
             background: var(--surface-hover);
+            transform: translateY(-8px) scale(1.01);
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.5), 
+                        0 0 20px 0 var(--accent-glow);
         }
+
+        /* Retrasos en cascada para la aparición de las tarjetas */
+        .card:nth-child(1) { animation-delay: 0.2s; }
+        .card:nth-child(2) { animation-delay: 0.35s; }
+        .card:nth-child(3) { animation-delay: 0.5s; }
+        .card:nth-child(4) { animation-delay: 0.65s; }
+        .card:nth-child(5) { animation-delay: 0.8s; }
 
         .card-title {
             font-family: var(--font-display);
             font-size: 1.5rem;
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
             color: var(--text-primary);
             font-weight: 600;
         }
 
-        /* Tarjeta de Perfil */
+        /* --- Tarjeta: Perfil --- */
         .profile-card {
             grid-column: 1 / -1;
-            display: flex;
-            flex-direction: column;
             gap: 2rem;
         }
 
@@ -126,24 +167,31 @@
             }
         }
 
+        .profile-img-container {
+            flex-shrink: 0;
+            animation: float 6s ease-in-out infinite;
+        }
+
         .profile-img {
-            width: 140px;
-            height: 140px;
+            width: 150px;
+            height: 150px;
             border-radius: 50%;
             object-fit: cover;
-            filter: grayscale(100%) contrast(1.2); /* Estilo de agencia */
-            transition: filter 0.5s ease;
+            filter: grayscale(100%) contrast(1.1);
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            border: 2px solid transparent;
         }
 
         .profile-card:hover .profile-img {
             filter: grayscale(0%);
+            border-color: var(--text-secondary);
+            transform: scale(1.05) rotate(2deg);
         }
 
         .bio-text {
             color: var(--text-secondary);
             font-size: 1.1rem;
             font-weight: 300;
-            max-width: 500px;
         }
 
         .bio-text strong {
@@ -151,7 +199,7 @@
             font-weight: 500;
         }
 
-        /* Tarjeta de Contacto */
+        /* --- Tarjeta: Contacto --- */
         .contact-card {
             background: #ffffff;
             color: #000000;
@@ -160,6 +208,7 @@
         .contact-card:hover {
             background: #f4f4f5;
             border-color: #ffffff;
+            box-shadow: 0 20px 40px -10px rgba(255, 255, 255, 0.1);
         }
 
         .contact-card .card-title {
@@ -171,17 +220,37 @@
             color: #000000;
             text-decoration: none;
             font-size: 1.2rem;
-            font-weight: 500;
+            font-weight: 600;
             margin-bottom: 1rem;
-            border-bottom: 1px solid transparent;
-            transition: border-color 0.3s;
+            position: relative;
+            width: fit-content;
         }
 
-        .contact-link:hover {
-            border-color: #000000;
+        /* Animación de subrayado en el contacto */
+        .contact-link::after {
+            content: '';
+            position: absolute;
+            width: 0%;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background-color: #000000;
+            transition: width 0.3s ease;
         }
 
-        /* Experiencia y Skills */
+        .contact-link:hover::after {
+            width: 100%;
+        }
+
+        /* --- Tarjeta: Experiencia --- */
+        .exp-card {
+            grid-column: 1 / -1;
+        }
+
+        @media (min-width: 1024px) {
+            .exp-card { grid-column: span 2; }
+        }
+
         .experience-list {
             list-style: none;
             display: flex;
@@ -193,6 +262,11 @@
             border-left: 1px solid var(--border);
             padding-left: 1.5rem;
             position: relative;
+            transition: transform 0.3s ease;
+        }
+
+        .exp-item:hover {
+            transform: translateX(10px);
         }
 
         .exp-item::before {
@@ -204,25 +278,28 @@
             height: 7px;
             background: var(--text-secondary);
             border-radius: 50%;
-            transition: background 0.3s;
+            transition: all 0.3s ease;
         }
 
-        .card:hover .exp-item::before {
+        .exp-item:hover::before {
             background: var(--accent);
+            box-shadow: 0 0 10px var(--accent);
+            transform: scale(1.5);
         }
 
         .exp-role {
-            font-size: 1.1rem;
+            font-size: 1.15rem;
             font-weight: 500;
-            color: var(--accent);
+            color: var(--text-primary);
         }
 
         .exp-company {
             font-size: 0.95rem;
             color: var(--text-secondary);
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.75rem;
         }
 
+        /* --- Tarjeta: Skills --- */
         .skills-container {
             display: flex;
             flex-wrap: wrap;
@@ -235,24 +312,16 @@
             border-radius: 100px;
             font-size: 0.9rem;
             color: var(--text-secondary);
-            transition: all 0.3s ease;
+            background: transparent;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            cursor: default;
         }
 
-        .card:hover .skill-pill {
-            border-color: var(--text-secondary);
-            color: var(--text-primary);
-        }
-
-        /* Animaciones */
-        @keyframes fadeUp {
-            0% {
-                opacity: 0;
-                transform: translateY(40px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .skill-pill:hover {
+            border-color: var(--text-primary);
+            color: var(--bg);
+            background: var(--text-primary);
+            transform: translateY(-3px) scale(1.05);
         }
     </style>
 </head>
@@ -261,17 +330,19 @@
     <div class="wrapper">
         <header>
             <h1>Albert Drudis</h1>
-            <p class="subtitle">Ingeniero de Software Senior. Especializado en arquitectura Android, liderazgo de equipos y alto rendimiento.</p>
+            <p class="subtitle">Ingeniero de Software Senior. Especializado en arquitectura Android, liderazgo de equipos y alto rendimiento operativo.</p>
         </header>
 
         <div class="bento-grid">
             
             <div class="card profile-card">
-                <img src="perfil.png" alt="Albert Drudis" class="profile-img">
+                <div class="profile-img-container">
+                    <img src="perfil.png" alt="Albert Drudis" class="profile-img">
+                </div>
                 <div>
                     <h2 class="card-title">Sobre mí</h2>
                     <p class="bio-text">
-                        Desarrollador Senior y Team Lead. Transformo la complejidad técnica en <strong>soluciones móviles ágiles y robustas</strong>. Experto en CI/CD, metodologías Agile y en la creación de culturas de ingeniería colaborativas.
+                        Desarrollador Senior y Team Lead. Transformo la complejidad técnica en <strong>soluciones móviles ágiles y robustas</strong>. Especialista en optimización de rendimiento, flujos CI/CD y en la creación de culturas de ingeniería guiadas por metodologías Agile.
                     </p>
                 </div>
             </div>
@@ -280,49 +351,51 @@
                 <h2 class="card-title">Hablemos</h2>
                 <a href="mailto:albert.drudis@gmail.com" class="contact-link">albert.drudis@gmail.com</a>
                 <a href="tel:669172677" class="contact-link">+34 669 172 677</a>
-                <p style="color: #52525b; margin-top: auto;">📍 Lleida, España</p>
+                <p style="color: #52525b; margin-top: auto; font-weight: 500; display: flex; align-items: center; gap: 8px;">
+                    <span style="font-size: 1.2rem;">📍</span> Lleida, España
+                </p>
             </div>
 
-            <div class="card" style="grid-column: 1 / -1; @media(min-width: 768px){grid-column: span 2;}">
+            <div class="card exp-card">
                 <h2 class="card-title">Trayectoria</h2>
                 <ul class="experience-list">
                     <li class="exp-item">
                         <div class="exp-role">Desarrollador Senior Android & Team Lead</div>
                         <div class="exp-company">Viewnext • 2023 - Presente</div>
-                        <p class="bio-text" style="font-size: 0.95rem;">Liderazgo de un equipo de 4 desarrolladores. Arquitectura de soluciones nativas, refactorización crítica e implementación de ciclos CI/CD bajo metodologías Agile.</p>
+                        <p class="bio-text" style="font-size: 0.95rem;">Liderazgo directo de un equipo de 4 desarrolladores. Arquitectura de soluciones nativas, refactorización técnica e implementación de ciclos de integración continua.</p>
                     </li>
                     <li class="exp-item">
                         <div class="exp-role">Desarrollador Full Stack de Software</div>
                         <div class="exp-company">Indra • 2019 - 2023</div>
-                        <p class="bio-text" style="font-size: 0.95rem;">Desarrollo en entornos Java y optimización de bases de datos Oracle para sistemas empresariales complejos.</p>
+                        <p class="bio-text" style="font-size: 0.95rem;">Desarrollo core en entornos Java y optimización avanzada de bases de datos Oracle para sistemas empresariales.</p>
                     </li>
                 </ul>
             </div>
 
             <div class="card">
-                <h2 class="card-title">Stack & Core</h2>
+                <h2 class="card-title">Core Stack</h2>
                 <div class="skills-container">
                     <span class="skill-pill">Android Native</span>
                     <span class="skill-pill">Kotlin</span>
                     <span class="skill-pill">Jetpack Compose</span>
                     <span class="skill-pill">Arquitectura Clean</span>
                     <span class="skill-pill">Team Lead</span>
-                    <span class="skill-pill">CI/CD</span>
-                    <span class="skill-pill">Scrum / Agile</span>
+                    <span class="skill-pill">CI/CD Pipeline</span>
+                    <span class="skill-pill">Agile / Scrum</span>
                     <span class="skill-pill">Java & Oracle</span>
                 </div>
             </div>
 
             <div class="card" style="grid-column: 1 / -1;">
                 <h2 class="card-title">Formación Académica</h2>
-                <div style="display: flex; flex-wrap: wrap; gap: 2rem;">
-                    <div>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem;">
+                    <div class="exp-item" style="border-left: 2px solid var(--border);">
                         <div class="exp-role">Ingeniería Informática</div>
                         <div class="exp-company">Universitat de Lleida • 2015 - 2020</div>
                     </div>
-                    <div>
+                    <div class="exp-item" style="border-left: 2px solid var(--border);">
                         <div class="exp-role">Técnico Superior DAW</div>
-                        <div class="exp-company">Ilerna • 2013 - 2015</div>
+                        <div class="exp-company">Ilerna, Lleida • 2013 - 2015</div>
                     </div>
                 </div>
             </div>
