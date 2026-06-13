@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Albert Drudis | Team Lead & Analista Android</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1e40af;
+            --primary-light: #3b82f6;
+            --text-main: #1f2937;
+            --text-muted: #4b5563;
+            --bg-main: #f8fafc;
+            --bg-card: #ffffff;
+            --border: #e2e8f0;
+            --radius: 12px;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 1050px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        @media (min-width: 768px) {
+            .container {
+                grid-template-columns: 320px 1fr;
+            }
+        }
+
+        /* Sidebar Styles */
+        aside {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 2.5rem 1.5rem;
+            text-align: center;
+            height: fit-content;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05);
+        }
+
+        .profile-img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid var(--border);
+            margin-bottom: 1.5rem;
+            transition: var(--transition);
+        }
+
+        .profile-img:hover {
+            transform: scale(1.05);
+            border-color: var(--primary-light);
+        }
+
+        h1 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            font-size: 1rem;
+            color: var(--primary);
+            font-weight: 600;
+            margin-bottom: 2rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .info-section {
+            text-align: left;
+            margin-bottom: 2rem;
+        }
+
+        .info-section h3 {
+            font-size: 1.1rem;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-main);
+            position: relative;
+        }
+
+        .info-section h3::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background-color: var(--primary);
+        }
+
+        .contact-link {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            margin-bottom: 0.75rem;
+            font-size: 0.95rem;
+            transition: var(--transition);
+        }
+
+        .contact-link:hover {
+            color: var(--primary-light);
+        }
+
+        .skills-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .skill-badge {
+            background: var(--bg-main);
+            color: var(--text-muted);
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            border: 1px solid var(--border);
+            transition: var(--transition);
+        }
+
+        .skill-badge:hover {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .lang-item {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.95rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-muted);
+        }
+
+        /* Main Content Styles */
+        main {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        section {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 2.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05);
+        }
+
+        section h2 {
+            font-size: 1.4rem;
+            color: var(--text-main);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .profile-text {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            text-align: justify;
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-left: 2rem;
+            margin-bottom: 2.5rem;
+            border-left: 2px solid var(--border);
+            transition: var(--transition);
+        }
+
+        .timeline-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -7px;
+            top: 6px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--bg-card);
+            border: 2px solid var(--primary);
+            transition: var(--transition);
+        }
+
+        .timeline-item:hover::before {
+            background: var(--primary-light);
+            transform: scale(1.2);
+        }
+
+        .time-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            margin-bottom: 0.5rem;
+        }
+
+        .job-title {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .company-name {
+            color: var(--primary);
+            font-weight: 500;
+        }
+
+        .date-badge {
+            background: #eff6ff;
+            color: var(--primary);
+            padding: 0.25rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .job-desc {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-top: 0.75rem;
+        }
+
+        .job-desc ul {
+            list-style-type: none;
+            margin-top: 0.5rem;
+        }
+
+        .job-desc li {
+            position: relative;
+            padding-left: 1.25rem;
+            margin-bottom: 0.4rem;
+        }
+
+        .job-desc li::before {
+            content: "•";
+            color: var(--primary-light);
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <aside>
+            <img src="perfil.png" alt="Albert Drudis" class="profile-img">
+            <h1>Albert Drudis</h1>
+            <div class="subtitle">Team Lead & Analista Android</div>
+
+            <div class="info-section">
+                <h3>Contacto</h3>
+                <a href="tel:669172677" class="contact-link">
+                    <span>📞</span> 669172677
+                </a>
+                <a href="mailto:albert.drudis@gmail.com" class="contact-link">
+                    <span>✉️</span> albert.drudis@gmail.com
+                </a>
+                <div class="contact-link">
+                    <span>📍</span> Lleida, España
+                </div>
+            </div>
+
+            <div class="info-section">
+                <h3>Competencias</h3>
+                <div class="skills-container">
+                    <span class="skill-badge">Desarrollo Android</span>
+                    <span class="skill-badge">Kotlin</span>
+                    <span class="skill-badge">Jetpack Compose</span>
+                    <span class="skill-badge">Team Lead</span>
+                    <span class="skill-badge">CI/CD</span>
+                    <span class="skill-badge">Metodologías Agile</span>
+                    <span class="skill-badge">Java</span>
+                    <span class="skill-badge">Oracle</span>
+                </div>
+            </div>
+
+            <div class="info-section">
+                <h3>Idiomas</h3>
+                <div class="lang-item">
+                    <span>Español</span>
+                    <strong>Nativo</strong>
+                </div>
+                <div class="lang-item">
+                    <span>Catalán</span>
+                    <strong>Nativo</strong>
+                </div>
+                <div class="lang-item">
+                    <span>Inglés</span>
+                    <strong>Profesional</strong>
+                </div>
+            </div>
+        </aside>
+
+        <main>
+            <section>
+                <h2>👤 Perfil Personal</h2>
+                <p class="profile-text">
+                    Desarrollador Senior de Android y Jefe de equipo con experiencia en la creación de soluciones de software de alta calidad y la optimización del rendimiento de aplicaciones. Especializado en la implementación de arquitecturas sólidas e integración continua (CI/CD) para maximizar la eficiencia del desarrollo, fomentando siempre una colaboración efectiva dentro de equipos multidisciplinarios.
+                </p>
+            </section>
+
+            <section>
+                <h2>💼 Experiencia Laboral</h2>
+                
+                <div class="timeline-item">
+                    <div class="time-header">
+                        <div>
+                            <div class="job-title">Desarrollador Senior Android</div>
+                            <div class="company-name">Viewnext</div>
+                        </div>
+                        <span class="date-badge">2023 - Presente</span>
+                    </div>
+                    <div class="job-desc">
+                        <ul>
+                            <li>Desarrollo de soluciones avanzadas de software en entornos nativos Android.</li>
+                            <li>Optimización integral del rendimiento y estabilidad de las aplicaciones existentes.</li>
+                            <li>Liderazgo directo sobre un equipo de 4 desarrolladores, gestionando ciclos de entrega mediante metodologías Agile (Scrum/Kanban).</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="time-header">
+                        <div>
+                            <div class="job-title">Desarrollador de Software</div>
+                            <div class="company-name">Indra</div>
+                        </div>
+                        <span class="date-badge">2019 - 2023</span>
+                    </div>
+                    <div class="job-desc">
+                        <ul>
+                            <li>Desempeño como Desarrollador Full Stack gestionando entornos robustos basados en Java y sistemas de bases de datos Oracle.</li>
+                            <li>Refactorización y optimización de flujos lógicos en aplicaciones críticas de la compañía.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section>
+                <h2>🎓 Educación</h2>
+                
+                <div class="timeline-item">
+                    <div class="time-header">
+                        <div>
+                            <div class="job-title">Ingeniería Informática</div>
+                            <div class="company-name">Universitat de Lleida</div>
+                        </div>
+                        <span class="date-badge">2015 - 2020</span>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="time-header">
+                        <div>
+                            <div class="job-title">Técnico de Software en Desarrollo de Aplicaciones Web</div>
+                            <div class="company-name">Ilerna, Lleida</div>
+                        </div>
+                        <span class="date-badge">2013 - 2015</span>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+</body>
+</html>
